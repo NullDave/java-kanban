@@ -1,8 +1,10 @@
+package task;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class EpicTask extends Task{
-    private final ArrayList<Integer> listSubTaskId; // индификаторы подзадач
+public class EpicTask extends Task {
+    private ArrayList<Integer> listSubTaskId; // индификаторы подзадач
 
     public EpicTask( String title, String description) {
         super(title, description);
@@ -10,7 +12,7 @@ public class EpicTask extends Task{
     }
 
     public EpicTask(int id, String title, String description) {
-        super(id, title, description,StatusType.NEW);
+        super(id, title, description, StatusType.NEW);
         listSubTaskId = new ArrayList<>();
     }
 
@@ -18,9 +20,14 @@ public class EpicTask extends Task{
         return listSubTaskId;
     }
 
+    public void setListSubTaskId(List<Integer> listSubTaskId) {
+        this.listSubTaskId =  new ArrayList<>(listSubTaskId);
+    }
+
     public void addSubTaskId(int id) {
         listSubTaskId.add(id);
     }
+
     public void removeSubTaskId(int id) {
         listSubTaskId.remove((Integer) id);
     }

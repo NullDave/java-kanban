@@ -1,11 +1,12 @@
-/*
-Интефейс обработчика.
-Как я понял ТЗ дальше возможно будем хранить задачи где то БД. обработчик позволит легко добавить работу с БД и т.п.
-*/
+package manager;
+
+import task.EpicTask;
+import task.SubTask;
+import task.Task;
 
 import java.util.List;
 
-public interface Handler {
+public interface TaskManger {
 
     Task getTask(int id);
 
@@ -31,7 +32,15 @@ public interface Handler {
 
     void updateSubTask(SubTask subTask);
 
-    void clearAllTaskForType(TaskType taskType);
+    void clearAllTask();
 
-    void removeTaskForType(TaskType taskType, int id);
+    void clearAllEpicTask();
+
+    void clearAllSubTask();
+
+    void removeTask(int id);
+
+    void removeEpicTask(int id);
+
+    void removeSubTask(int id);
 }

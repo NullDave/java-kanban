@@ -1,6 +1,11 @@
+import manager.TaskManagerDefault;
+import manager.TaskManger;
+import task.EpicTask;
+import task.StatusType;
+import task.SubTask;
 
 public class Main {
-    static TaskManager manager = new TaskManager();
+    static TaskManger manager = new TaskManagerDefault();
 
     public static void main(String[] args) {
 
@@ -10,10 +15,12 @@ public class Main {
         manager.addEpicTask(new EpicTask("Важный эпик 2","бла бла бла бла бла"));
         manager.addSubTask(new SubTask(4,"подзадача 1","бла бло бли"));
         print();
-        manager.updateSubTask(new SubTask(4,5,"подзадача 1","бла бло бли",StatusType.IN_PROGRESS) );
+        manager.updateSubTask(new SubTask(4,5,"подзадача 1","бла бло бли", StatusType.IN_PROGRESS) );
         manager.updateSubTask(new SubTask(1,3,"подзадача 2","бла бла бла бла",StatusType.DONE));
         print();
         manager.removeSubTask(2);
+        print();
+        manager.clearAllSubTask();
         print();
 
     }
