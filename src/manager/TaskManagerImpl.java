@@ -7,14 +7,14 @@ import java.util.List;
 
 import static task.StatusType.*;
 
-public class TaskManagerDefault implements TaskManger {
+public class TaskManagerImpl implements TaskManger {
 
     private final HashMap<Integer, Task> taskHashMap;
     private final HashMap<Integer, EpicTask> epicTaskHashMap;
     private final HashMap<Integer, SubTask> subTaskHashMap;
     private int indeficator;
 
-    public TaskManagerDefault() {
+    public TaskManagerImpl() {
         taskHashMap = new HashMap<>();
         epicTaskHashMap = new HashMap<>();
         subTaskHashMap = new HashMap<>();
@@ -52,23 +52,26 @@ public class TaskManagerDefault implements TaskManger {
     }
 
     @Override
-    public void addTask(Task task) {
+    public int addTask(Task task) {
         task.setId(getNewId());
         taskHashMap.put(task.getId(),task);
+        return task.getId();
     }
 
     @Override
-    public void addEpicTask(EpicTask epicTask) {
+    public int addEpicTask(EpicTask epicTask) {
         epicTask.setId(getNewId());
         epicTaskHashMap.put(epicTask.getId(),epicTask);
+        return epicTask.getId();
     }
 
     @Override
-    public void addSubTask(SubTask subTask) {
+    public int addSubTask(SubTask subTask) {
         subTask.setId(getNewId());
         epicTaskHashMap.get(subTask.getEpicTaskId()).addSubTaskId(subTask.getId());
         subTaskHashMap.put(subTask.getId(),subTask);
         updateEpicTaskStatus(subTask.getEpicTaskId());
+        return subTask.getId();
     }
 
     @Override

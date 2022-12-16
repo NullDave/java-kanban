@@ -20,11 +20,11 @@ public interface TaskManger {
 
     List<SubTask> getAllSubTask();
 
-    void addTask(Task task);
+    int addTask(Task task);
 
-    void addEpicTask(EpicTask epicTask);
+    int addEpicTask(EpicTask epicTask);
 
-    void addSubTask(SubTask subTask);
+    int addSubTask(SubTask subTask);
 
     void updateTask(Task task);
 
