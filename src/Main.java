@@ -14,6 +14,9 @@ public class Main {
         manager.addSubTask(new SubTask(1,"подзадача 2","бла бла бла бла"));
         manager.addEpicTask(new EpicTask("Важный эпик 2","бла бла бла бла бла"));
         int subTaskIdTwo = manager.addSubTask(new SubTask(4,"подзадача 1","бла бло бли"));
+        manager.addSubTask(new SubTask(1,"подзадача 3","бла бла бла бла"));
+        manager.addSubTask(new SubTask(4,"подзадача 4","бла бла бла бла"));
+
         print();
         // Простите, я комментарий не заметил на предущем ревью.
         SubTask subTaskOne = manager.getSubTask(subTaskIdOne);
@@ -23,11 +26,8 @@ public class Main {
         subTaskTwo.setStatus(StatusType.DONE);
         manager.updateSubTask(subTaskTwo);
         print();
-        manager.removeSubTask(2);
+        manager.removeEpicTask(1);
         print();
-        manager.clearAllSubTask();
-        print();
-
     }
 
     public static void print(){

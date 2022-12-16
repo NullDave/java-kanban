@@ -117,9 +117,11 @@ public class TaskManagerImpl implements TaskManger {
         taskHashMap.remove(id);
     }
 
+    // Извените x2. Буду внимательней(
     @Override
     public void removeEpicTask(int id) {
         epicTaskHashMap.remove(id);
+        subTaskHashMap.values().removeIf(subTask -> subTask.getEpicTaskId() == id);
     }
 
     @Override
