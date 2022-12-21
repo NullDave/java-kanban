@@ -1,12 +1,12 @@
-import manager.TaskManagerImpl;
-import manager.TaskManger;
+import jdk.jfr.Timespan;
+import manager.*;
 import task.EpicTask;
 import task.StatusType;
 import task.SubTask;
+import task.Task;
 
 public class Main {
-    static TaskManger manager = new TaskManagerImpl();
-
+    static TaskManger manager = Managers.getDefault();
     public static void main(String[] args) {
 
         manager.addEpicTask(new EpicTask("Важный эпик","бла бла"));
@@ -18,7 +18,7 @@ public class Main {
         manager.addSubTask(new SubTask(4,"подзадача 4","бла бла бла бла"));
 
         print();
-        // Простите, я комментарий не заметил на предущем ревью.
+        printHistory();
         SubTask subTaskOne = manager.getSubTask(subTaskIdOne);
         subTaskOne.setStatus(StatusType.IN_PROGRESS);
         manager.updateSubTask(subTaskOne);
@@ -28,6 +28,7 @@ public class Main {
         print();
         manager.removeEpicTask(1);
         print();
+        printHistory();
     }
 
     public static void print(){
@@ -41,4 +42,17 @@ public class Main {
         System.out.println("/".repeat(100));
 
     }
+
+    public static void printHistory(){
+        System.out.println("__история просмотров__");
+        for (Task task:manager.getHistory()) {
+            System.out.println(task);
+        }
+        System.out.printf("последние %s запросов \n", manager.getHistory().size());
+        System.out.println("/".repeat(100));
+
+    }
+
+
+
 }

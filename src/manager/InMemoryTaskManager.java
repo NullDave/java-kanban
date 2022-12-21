@@ -4,17 +4,17 @@ import task.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import static task.StatusType.*;
 
-public class TaskManagerImpl implements TaskManger {
+public class InMemoryTaskManager implements TaskManger {
 
     private final HashMap<Integer, Task> taskHashMap;
     private final HashMap<Integer, EpicTask> epicTaskHashMap;
     private final HashMap<Integer, SubTask> subTaskHashMap;
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private int indeficator;
 
-    public TaskManagerImpl() {
+    public InMemoryTaskManager() {
         taskHashMap = new HashMap<>();
         epicTaskHashMap = new HashMap<>();
         subTaskHashMap = new HashMap<>();
@@ -23,17 +23,26 @@ public class TaskManagerImpl implements TaskManger {
 
     @Override
     public Task getTask(int id) {
-        return taskHashMap.get(id);
+        Task task = taskHashMap.get(id);
+
+        historyManager.addTask(task);
+        return task;
     }
 
     @Override
     public EpicTask getEpicTask(int id) {
-        return epicTaskHashMap.get(id);
+        EpicTask epicTask = epicTaskHashMap.get(id);
+
+        historyManager.addTask(epicTask);
+        return epicTask;
     }
 
     @Override
     public SubTask getSubTask(int id) {
-        return subTaskHashMap.get(id);
+        SubTask subTask = subTaskHashMap.get(id);
+
+        historyManager.addTask(subTask);
+        return subTask;
     }
 
     @Override
@@ -117,7 +126,6 @@ public class TaskManagerImpl implements TaskManger {
         taskHashMap.remove(id);
     }
 
-    // Извените x2. Буду внимательней(
     @Override
     public void removeEpicTask(int id) {
         epicTaskHashMap.remove(id);
@@ -131,6 +139,11 @@ public class TaskManagerImpl implements TaskManger {
         subTaskHashMap.remove(id);
         epicTaskHashMap.get(epicTaskID).removeSubTaskId(id);
         updateEpicTaskStatus(epicTaskID);
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
     private void updateEpicTaskStatus(int id){
