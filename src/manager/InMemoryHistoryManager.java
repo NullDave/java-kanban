@@ -15,8 +15,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void addTask(Task task) {
-        tasks.add(0,task); // добавляем task в начало списка
-        if(MAX_SIZE < tasks.size()) tasks.remove(MAX_SIZE); // если MAX_SIZE достигнут, то удаляем последний task
+        if (tasks.size()>=MAX_SIZE) tasks.remove(0);
+        tasks.add(task);
 
     }
 
