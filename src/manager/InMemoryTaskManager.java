@@ -124,12 +124,15 @@ public class InMemoryTaskManager implements TaskManger {
     @Override
     public void removeTask(int id) {
         taskHashMap.remove(id);
+        historyManager.removeTask(id);
     }
 
     @Override
     public void removeEpicTask(int id) {
         epicTaskHashMap.remove(id);
         subTaskHashMap.values().removeIf(subTask -> subTask.getEpicTaskId() == id);
+        historyManager.removeTask(id);
+
     }
 
     @Override
@@ -139,6 +142,7 @@ public class InMemoryTaskManager implements TaskManger {
         subTaskHashMap.remove(id);
         epicTaskHashMap.get(epicTaskID).removeSubTaskId(id);
         updateEpicTaskStatus(epicTaskID);
+        historyManager.removeTask(id);
     }
 
     @Override
