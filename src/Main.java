@@ -1,11 +1,10 @@
 import manager.*;
 import task.EpicTask;
-import task.StatusType;
 import task.SubTask;
 import task.Task;
 
 public class Main {
-    static TaskManger manager = Managers.getDefault();
+    static TaskManager manager = Managers.getDefault();
     public static void main(String[] args) {
 
         int epicTaskIdOne = manager.addEpicTask(new EpicTask("Важный эпик","бла бла"));

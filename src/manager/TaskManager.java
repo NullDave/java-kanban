@@ -6,7 +6,7 @@ import task.Task;
 
 import java.util.List;
 
-public interface TaskManger {
+public interface TaskManager {
 
     Task getTask(int id);
 

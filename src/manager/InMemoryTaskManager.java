@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import static task.StatusType.*;
 
-public class InMemoryTaskManager implements TaskManger {
+public class InMemoryTaskManager implements TaskManager {
 
     private final HashMap<Integer, Task> taskHashMap;
     private final HashMap<Integer, EpicTask> epicTaskHashMap;
