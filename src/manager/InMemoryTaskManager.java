@@ -47,7 +47,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getAllTask() {
-        return new ArrayList<>(epicTaskHashMap.values());
+        return new ArrayList<>(taskHashMap.values());
     }
 
     @Override
@@ -182,5 +182,22 @@ public class InMemoryTaskManager implements TaskManager {
 
     private int getNewId(){
         return indeficator++;
+    }
+
+
+    public void setNewIndeficator(int indeficator){
+        this.indeficator = indeficator;
+    }
+
+    public HashMap<Integer, Task>getTaskHashMap(){
+        return taskHashMap;
+    }
+
+    public HashMap<Integer, EpicTask> getEpicTaskHashMap(){
+        return epicTaskHashMap;
+    }
+
+    public HashMap<Integer, SubTask> getsubTaskHashMap(){
+        return subTaskHashMap;
     }
 }

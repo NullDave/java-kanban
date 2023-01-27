@@ -1,0 +1,6 @@
+id,type,title,status,description,epic
+5,TASK,Task простой,NEW,бла бла,
+4,EPICTASK,Важный эпик 2,NEW,бла бла бла бла бла,
+
+id,type
+5,TASK
