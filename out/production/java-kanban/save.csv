@@ -1,6 +1,13 @@
 id,type,title,status,description,epic
 5,TASK,Task простой,NEW,бла бла,
+1,EPICTASK,Важный эпик,NEW,бла бла,
 4,EPICTASK,Важный эпик 2,NEW,бла бла бла бла бла,
+2,SUBTASK,подзадача 1,NEW,бла бла бла,1
+3,SUBTASK,подзадача 2,NEW,бла бла бла бла,1
 
 id,type
 5,TASK
+1,EPICTASK
+4,EPICTASK
+2,SUBTASK
+3,SUBTASK

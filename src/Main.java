@@ -19,22 +19,29 @@ public class Main {
         manager.getSubTask(subTaskIdOne);
         manager.getTask(idTask);
         manager.getEpicTask(epicTaskIdOne);
-        System.out.println("Менджер №1----------------");
         print(manager);
         printHistory(manager);
 
-        TaskManager managerTwo = FileBackedTasksManager.loadFromFile(Paths.get(PATH).toFile());
+        TaskManager loadManager = FileBackedTasksManager.loadFromFile(Paths.get(PATH).toFile());
+        System.out.println("проверка на соответствие: "+complianceCheck(manager,loadManager));
 
-        System.out.println("Менджер №2----------------");
-        print(managerTwo);
-        printHistory(managerTwo);
-        managerTwo.removeEpicTask(epicTaskIdOne);
+    }
 
-        TaskManager managerThree = FileBackedTasksManager.loadFromFile(Paths.get(PATH).toFile());
-        System.out.println("Менджер №3----------------");
-        print(managerThree);
-        printHistory(managerThree);
-
+    private static boolean complianceCheck(TaskManager manager, TaskManager loadManager) {
+        boolean isEqual = true;
+        for (Task task :manager.getAllTask()){
+            if(!task.equals(loadManager.getTask(task.getId())))
+                isEqual = false;
+        }
+        for (Task task :manager.getAllEpicTask()){
+            if(!task.equals(loadManager.getEpicTask(task.getId())))
+                isEqual = false;
+        }
+        for (Task task :manager.getAllSubTask()){
+            if(!task.equals(loadManager.getSubTask(task.getId())))
+                isEqual = false;
+        }
+        return isEqual;
     }
 
     public static void print(TaskManager manager){
