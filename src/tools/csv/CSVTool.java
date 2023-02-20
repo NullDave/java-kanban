@@ -44,7 +44,7 @@ public class CSVTool {
 
 
     //  парсим таблицу или несколько таблиц зависимости от флага
-    private void read( boolean multiTable){
+    private void read(boolean multiTable){
         try(BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             String line;
             current.clear();

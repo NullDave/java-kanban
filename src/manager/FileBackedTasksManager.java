@@ -8,14 +8,17 @@ import tools.csv.CSVWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
 
     private final CSVTool csvTool;
-    private final static String[] COLUMN_NAMES_MANAGER = {"id","type","title","status","description","epic"};
+    private final static String[] COLUMN_NAMES_MANAGER = {"id","type","title","status","description","duration","startTime","epic"};
     private final static String[] COLUMN_NAMES_HISTORY = {"id","type"};
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm");
 
 
     public FileBackedTasksManager(File file) {
@@ -59,16 +62,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     }
 
     private String[] convertTaskManager(Task task,TaskType type) {
-        String[] element = new String[6];
+        String[] element = new String[8];
         element[0] = Integer.toString(task.getId());
         element[1] = type.name();
         element[2] = task.getTitle();
         element[3] = task.getStatus().name();
         element[4] = task.getDescription();
-        if(type == TaskType.SUBTASK)
-            element[5] = Integer.toString(((SubTask)task).getEpicTaskId());
-        else
-            element[5] = "";
+        element[5] = Long.toString(task.getDuration());
+        if(task.getStartTime() != null) {
+            element[6] = task.getStartTime().format(formatter);
+        }else {
+            element[6] = "";
+        }
+
+        if(type == TaskType.SUBTASK) {
+            element[7] = Integer.toString(((SubTask) task).getEpicTaskId());
+        }else {
+            element[7] = "";
+        }
         return element;
     }
 
@@ -104,7 +115,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
      private static void loadManager(FileBackedTasksManager manager, List<CSVRow> rows){
          final HashMap<Integer, Task> taskHashMap = manager.getTaskHashMap();
          final HashMap<Integer, EpicTask> epicTaskHashMap = manager.getEpicTaskHashMap();
-         final HashMap<Integer, SubTask> subTaskHashMap = manager.getsubTaskHashMap();
+         final HashMap<Integer, SubTask> subTaskHashMap = manager.getSubTaskHashMap();
+
          int maxIndeficator = 0;
          for (CSVRow row : rows) {
              TaskType type = TaskType.valueOf(row.get("type").getString());
@@ -112,34 +124,45 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
              int id = row.get("id").getInt();
              if(id > maxIndeficator)maxIndeficator = id;
 
+             LocalDateTime startTime = row.get("startTime").isNotNull() ? row.get("startTime").getDataTime(formatter) : null;
              switch (type) {
                  case TASK:
-                     taskHashMap.put(id, new Task(id,
-                                     row.get("title").getString(),
-                                     row.get("description").getString(),
-                                     status));
+                     Task task = new Task(id,
+                                         row.get("title").getString(),
+                                         row.get("description").getString(),
+                                         status,
+                                         row.get("duration").getLong(),
+                                         startTime);
+                     taskHashMap.put(id, task);
                      break;
                  case EPICTASK:
-                     epicTaskHashMap.put(id,new EpicTask(
-                                     id,
-                                     row.get("title").getString(),
-                                     row.get("description").getString(),
-                                     status));
+                     EpicTask epicTask = new EpicTask(id,
+                                                     row.get("title").getString(),
+                                                     row.get("description").getString(),
+                                                     status,
+                                                     row.get("duration").getLong(),
+                                                     startTime);
+                     epicTaskHashMap.put(id,epicTask);
                      break;
                  case SUBTASK:
                      int apicID = row.get("epic").getInt();
-                    subTaskHashMap.put(id, new SubTask(
-                                     apicID,
-                                     id,
-                                     row.get("title").getString(),
-                                     row.get("description").getString(),
-                                     status));
+                     SubTask subTask = new SubTask(
+                             apicID,
+                             id,
+                             row.get("title").getString(),
+                             row.get("description").getString(),
+                             status,
+                             row.get("duration").getLong(),
+                             startTime);
+                    subTaskHashMap.put(id, subTask);
                     epicTaskHashMap.get(apicID).addSubTaskId(id);
                      break;
 
              }
          }
+
          manager.setNewIndeficator(maxIndeficator);
+         manager.updateSortedTasksByTime();
     }
 
     @Override
