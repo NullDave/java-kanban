@@ -19,14 +19,14 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, SubTask> subTaskHashMap;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private final Set<Task> sortedTasksByTime; // сортированный список задач и подзадач
-    private int indeficator;
+    private int id;
 
     public InMemoryTaskManager() {
         taskHashMap = new HashMap<>();
         epicTaskHashMap = new HashMap<>();
         subTaskHashMap = new HashMap<>();
         sortedTasksByTime = new TreeSet<>(new TaskSortingByTimeComparator());
-        indeficator = 1;
+        id = 1;
     }
 
     @Override
@@ -249,12 +249,12 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     private int getNewId(){
-        return indeficator++;
+        return id++;
     }
 
 
-    public void setNewIndeficator(int indeficator){
-        this.indeficator = indeficator;
+    public void setNewIndeficator(int id){
+        this.id = id;
     }
 
     public HashMap<Integer, Task>getTaskHashMap(){
