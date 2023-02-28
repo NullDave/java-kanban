@@ -121,12 +121,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearAllTask() {
+        taskHashMap.keySet().forEach(historyManager::removeTask); // я пропустил этот момент, историю тоже надо чистить
         taskHashMap.clear();
         updateSortedTasksByTime();
     }
 
     @Override
     public void clearAllEpicTask() {
+        epicTaskHashMap.keySet().forEach(historyManager::removeTask);
         epicTaskHashMap.clear();
         subTaskHashMap.clear();
         updateSortedTasksByTime();
@@ -134,6 +136,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearAllSubTask() {
+        subTaskHashMap.keySet().forEach(historyManager::removeTask);
         subTaskHashMap.clear();
         for (EpicTask epicTask : epicTaskHashMap.values()){
            epicTask.getListSubTaskId().clear();
@@ -177,7 +180,7 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(sortedTasksByTime);
     }
 
-    private void updateEpicTaskDynamicValue(int id){
+    public void updateEpicTaskDynamicValue(int id){
         EpicTask epicTask = epicTaskHashMap.get(id);
         int size = epicTask.getListSubTaskId().size();
         if(size < 1){

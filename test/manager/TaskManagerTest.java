@@ -274,32 +274,37 @@ import static org.junit.jupiter.api.Assertions.*;
      @Test
      public void clearAllTaskStandart(){
          createTask();
+         manager.getTask(1);
          manager.clearAllTask();
          assertTrue(manager.getAllTask().isEmpty());
+         assertTrue(manager.getHistory().isEmpty());
      }
 
      // clearAllEpicTask
      @Test
      public void clearAllEpicTaskStandart(){
          int id = createEpicTask();
+         int subId = createSubTask(id);
          createSubTask(id);
-         createSubTask(id);
+         manager.getEpicTask(id);
+         manager.getSubTask(subId);
          manager.clearAllEpicTask();
          assertTrue(manager.getAllEpicTask().isEmpty());
          assertTrue(manager.getAllSubTask().isEmpty());
-
+         assertTrue(manager.getHistory().isEmpty());
      }
 
      // clearAllSubTask
      @Test
      public void clearAllSubTaskStandart(){
          int id = createEpicTask();
+         int subId = createSubTask(id);
          createSubTask(id);
-         createSubTask(id);
+         manager.getSubTask(subId);
          manager.clearAllSubTask();
          assertEquals(0,manager.getEpicTask(id).getListSubTaskId().size());
          assertTrue(manager.getAllSubTask().isEmpty());
-
+         assertEquals(1,manager.getHistory().size());
      }
 
      // removeTask

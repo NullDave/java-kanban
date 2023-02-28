@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
 
-    private final CSVTool csvTool;
+    private CSVTool csvTool;
     private final static String[] COLUMN_NAMES_MANAGER = {"id","type","title","status","description","duration","startTime","epic"};
     private final static String[] COLUMN_NAMES_HISTORY = {"id","type"};
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm");
@@ -26,7 +26,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         this.csvTool = new CSVTool(file);
     }
 
-    private void save() {
+    public FileBackedTasksManager() {
+        super();
+    }
+
+    public void save() {
         try(CSVWriter writer = csvTool.rewriteCSV()) {
             writer.addTable(COLUMN_NAMES_MANAGER);
             for (Task task : getAllTask())
@@ -156,12 +160,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                              startTime);
                     subTaskHashMap.put(id, subTask);
                     epicTaskHashMap.get(apicID).addSubTaskId(id);
+                    manager.updateEpicTaskDynamicValue(apicID);
                      break;
 
              }
          }
 
-         manager.setNewIndeficator(maxIndeficator);
+         manager.setNewIndeficator(++maxIndeficator);
          manager.updateSortedTasksByTime();
     }
 
