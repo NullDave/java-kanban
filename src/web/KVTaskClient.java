@@ -19,12 +19,12 @@ public class KVTaskClient {
     }
 
     public void put(String key, String json) throws IOException, URISyntaxException, InterruptedException {
-       URL save = new URL(url,"save/"+key+"?API_TOKEN="+api);
+       URL save = new URL(url,String.format("save/%s?API_TOKEN=%s",key,api));
        send(save,json);
     }
 
     public String load(String key) throws IOException, URISyntaxException, InterruptedException {
-        URL load = new URL(url,"load/"+key+"?API_TOKEN="+api);
+        URL load = new URL(url,String.format("load/%s?API_TOKEN=%s",key,api));
         return send(load,null);
     }
 
